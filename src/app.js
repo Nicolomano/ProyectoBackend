@@ -5,8 +5,7 @@ import viewRouter from "./routes/views.router.js"
 import handlebars from "express-handlebars"
 import { Server } from "socket.io";
 import __dirname from "./utils.js";
-import ProductManager from "./ProductManager.js";
-
+import mongoose from "mongoose";
 
 const app = express()
 const PORT=8080
@@ -28,20 +27,18 @@ const httpServer = app.listen(PORT,()=>{
     console.log("server run on port:",PORT);
 } )
 
-const socketServer = new Server(httpServer) 
-const productManager = new ProductManager()
+const URL_MONGO = 'mongodb+srv://nicoezequielromano98:B34hiFCWF6lk3uol@cluster0.ofuh9pl.mongodb.net/proyect?retryWrites=true&w=majority&appName=Cluster0'
 
-socketServer.on("connection", socket=>{
-    console.log("nuevo cliente conectado");
-    socket.on("addProduct", async productData=>{
-        try{
-            const newProduct = await productManager.addProduct(productData)
-            socketServer.emit("productAdded", newProduct)
+const connectMongoDB = async () =>{
+    try {
+        await mongoose.connect(URL_MONGO)
+        console.log("Conectado con exito a MongoDB usando mongoose");
+    } catch (error) {
+        console.error("No se pudo conectar a la BD usando Moongose: " + error);
+        process.exit();
+    }
+}
 
-        }catch (error){
-            console.error("Error al agregar el producto");
-            socket.emit("productAddError", {error: "Error al agregar producto"})
-        }
-    })
-    socketServer.emit("msg02", "servidor conectado")
-})
+connectMongoDB()
+
+

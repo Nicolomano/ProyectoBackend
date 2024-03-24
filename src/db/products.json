@@ -1,6 +1,5 @@
 [
   {
-    "id": 1,
     "title": "Hojas a4",
     "description": "Block de hojas A4",
     "price": 500,
@@ -9,7 +8,6 @@
     "stock": 10
   },
   {
-    "id": 2,
     "title": "Lapiz B2",
     "description": "Lapiz B2 trazo comun",
     "price": 200,
@@ -18,7 +16,6 @@
     "stock": 101
   },
   {
-    "id": 3,
     "title": "Hojalillos",
     "description": "hojalillos para carpeta",
     "price": 20,
@@ -27,7 +24,6 @@
     "stock": 20
   },
   {
-    "id": 4,
     "title": "Tempera",
     "description": "Tempera de color variadas",
     "price": 82,
@@ -36,7 +32,6 @@
     "stock": 200
   },
   {
-    "id": 5,
     "title": "Hojas a4",
     "description": "Block de hojas A4",
     "price": 500,
@@ -45,7 +40,6 @@
     "stock": 10
   },
   {
-    "id": 6,
     "title": "Hojas a4",
     "description": "",
     "price": 500,
@@ -54,7 +48,6 @@
     "stock": 10
   },
   {
-    "id": 7,
     "title": "Hojas a4",
     "description": "Block de hojas A4",
     "price": 500,
@@ -63,7 +56,6 @@
     "stock": 10
   },
   {
-    "id": 8,
     "title": "Hojas a4",
     "description": "Block de hojas A4",
     "price": 500,
@@ -72,7 +64,6 @@
     "stock": 10
   },
   {
-    "id": 9,
     "title": "Hojas a4",
     "description": "Block de hojas A4",
     "price": 500,
@@ -81,7 +72,6 @@
     "stock": 10
   },
   {
-    "id": 10,
     "title": "Hojas a4",
     "description": "Block de hojas A4",
     "price": 500,
@@ -90,21 +80,11 @@
     "stock": 10
   },
   {
-    "id": 11,
     "title": "...",
     "description": "....",
     "code": "A....",
     "price": 500,
     "stock": 10,
     "thumbnail": ".."
-  },
-  {
-    "id": 12,
-    "title": "hola",
-    "description": "doaos",
-    "code": "520",
-    "price": "120",
-    "stock": "200",
-    "thumbnail": "sdsasa.jpg"
   }
 ]
