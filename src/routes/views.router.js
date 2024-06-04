@@ -7,7 +7,6 @@ const viewsRouter = express.Router()
 
 
 
-
 viewsRouter.get("/products",async(req, res)=>{
     try {
         let page = parseInt(req.query.page)
@@ -16,6 +15,7 @@ viewsRouter.get("/products",async(req, res)=>{
         result.prevLink = result.hasPrevPage ? `http://localhost:8080/api/views/products/?page=${result.prevPage}` : ''
         result.nextLink = result.hasNextPage ? `http://localhost:8080/api/views/products/?page=${result.nextPage}` : ''
         result.isValid = !(page<0 || page > result.totalPages)
+        result.user = req.session.user
         res.render("home", result)
         console.log(result);
     }catch(error){
