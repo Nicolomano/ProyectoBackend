@@ -13,6 +13,11 @@ import cartRouter from "./routes/cartRouter.js";
 import sessionRouter from "./routes/sessions.router.js";
 import viewsSessionRouter from "./routes/users.views.router.js";
 import productrouter from "./routes/product.Router.js";
+import githubLoginViewRouter from "./routes/github-login.views.router.js";
+
+//passport imports
+import passport from "passport";
+import initializePassport from "./config/passport.config.js";
 
 
 const app = express()
@@ -41,12 +46,17 @@ app.use(session({
     saveUninitialized: true
 }))
 
+//Middlewares passport
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
+
 app.use("/api/products", productrouter)
 app.use("/api/carts", cartRouter)
 app.use("/api/views", viewRouter)
 app.use("/api/sessions", sessionRouter)
 app.use("/users",viewsSessionRouter) 
-
+app.use('/github', githubLoginViewRouter)
 
 const httpServer = app.listen(PORT,()=>{
     console.log("server run on port:",PORT);

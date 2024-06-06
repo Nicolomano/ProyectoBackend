@@ -1,16 +1,16 @@
 import passport from "passport";
 import passportLocal from "passport-local"
 import GitHubStrategy from "passport-github2"
-import userModel from "../models/userModel";
-import { createHash, isValidPassword } from "../utils";
+import userModel from "../models/userModel.js";
+import { createHash, isValidPassword } from "../utils.js";
 
 const localStrategy = passportLocal.Strategy
 const initializePassport = () =>{
     //Login with GitHub
     passport.use("github", new GitHubStrategy({
-        clientID:"",
+        clientID:"Iv23liiQ7pyXFuHpJTEI",
         clientSecret:"1b77987511806e0d6c5134933364e045cd8a31e1",
-        callbackUrl:'http://localhost:9090/api/sessions/githubcallback'
+        callbackUrl:'http://localhost:8080/api/sessions/githubcallback'
     }, async (accessToken, refreshToken, profile, done)=>{
         console.log("perfil obtenido del usuario: ");
         console.log(profile);
@@ -67,4 +67,41 @@ const initializePassport = () =>{
 
         }
     ))
+
+    //login strategy
+    passport.use('login', new localStrategy(
+        {passReqToCallback: true, usernameField:'email'}, async(req,username,password, done)=>{
+            try {
+                const user =await userModel.findOne({email:username})
+                console.log('user found for login: ');
+                console.log(user);
+                if(!user){
+                    console.warn("user doesn't exists with username: "+ username);
+                    return done(null, false)
+                }
+                if(!isValidPassword(user,password)){
+                    console.warn("invalid credentials for user: "+username);
+                    return done(null, false)
+                }
+                return done(null, user)
+            } catch (error) {
+                return done(error)
+            }
+        }
+    ))
+    
+    passport.serializeUser((user, done)=>{
+        done(null, user._id)
+    })
+
+    passport.deserializeUser(async(id,done)=>{
+        try {
+            let user= await userModel.findById(id)
+            done(null, user)
+        } catch (error) {
+            console.error('error:'+error);
+        }
+    })
 }
+
+export default initializePassport
