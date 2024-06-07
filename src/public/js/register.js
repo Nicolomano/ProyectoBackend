@@ -13,8 +13,14 @@ form.addEventListener('submit',e=>{
             "Content-Type": "application/json"
         }
     }).then(result =>{
-        if(result.status === 200){
+        if(result.status === 201){
+            result.json()
+            alert('Usuario creado con exito!!')
             window.location.replace('/users/login')
+        }else{
+            alert('No se pudo crear el usuario')
         }
-    })
+    }).then(
+        json => console.log(json)
+    )
 })

@@ -2,10 +2,35 @@ import passport from "passport";
 import passportLocal from "passport-local"
 import GitHubStrategy from "passport-github2"
 import userModel from "../models/userModel.js";
-import { createHash, isValidPassword } from "../utils.js";
+import { PRIVATE_KEY, createHash, isValidPassword } from "../utils.js";
+import jwtStrategy from "passport-jwt";
+
+const JwtStrategy = jwtStrategy.Strategy
+const ExtractJwt = jwtStrategy.ExtractJwt
+
 
 const localStrategy = passportLocal.Strategy
 const initializePassport = () =>{
+    //strategy obtain JWT Token by cookie
+    passport.use('jwt', new JwtStrategy(
+        {
+            jwtFromRequest: ExtractJwt.fromExtractors([cookieExtractor]),
+            secretOrKey: PRIVATE_KEY
+        }, async(jwt_payload, done) =>{
+            console.log('Entrando a passport strategy con JWT');
+            try {
+                console.log('JWT obtenido del Payload');
+                console.log(jwt_payload);
+                done(null, jwt_payload.user)
+            } catch (error) {
+                return done(error)
+            }
+        }
+    ))
+    
+    
+    
+    
     //Login with GitHub
     passport.use("github", new GitHubStrategy({
         clientID:"Iv23liiQ7pyXFuHpJTEI",
@@ -57,7 +82,7 @@ const initializePassport = () =>{
                 email,
                 age,
                 password: createHash(password),
-                loggedBy: "App"
+                loggedBy: 'Form'
             }
             const result = await userModel.create(user)
             return done(null, result)
@@ -104,4 +129,18 @@ const initializePassport = () =>{
     })
 }
 
+
+const cookieExtractor = req =>{
+    let token = null
+    console.log('Entrando a cookie Extractor');
+
+    if(req && req.cookies){
+        console.log('Cookies presentes: ');
+        console.log(req.cookies);
+        token = req.cookies['jwtCookieToken']
+        console.log('Token obtenido desde Cookie: ');
+        console.log(token);
+    }
+    return token
+}
 export default initializePassport

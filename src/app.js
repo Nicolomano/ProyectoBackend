@@ -16,6 +16,7 @@ import productrouter from "./routes/product.Router.js";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 
 //passport imports
+import cookieParser from "cookie-parser";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
 
@@ -34,6 +35,9 @@ app.use(express.static(__dirname + "/public"));
 
 const fileStorage = fileStore(session)
 const URL_MONGO = 'mongodb+srv://nicoezequielromano98:B34hiFCWF6lk3uol@cluster0.ofuh9pl.mongodb.net/proyect?retryWrites=true&w=majority&appName=Cluster0'
+
+//Cookies
+app.use(cookieParser('CoderS3cr3tC0d3'))
 
 app.use(session({
     store:MongoStore.create({
