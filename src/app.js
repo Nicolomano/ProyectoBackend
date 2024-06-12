@@ -15,6 +15,10 @@ import viewsSessionRouter from "./routes/users.views.router.js";
 import productrouter from "./routes/product.Router.js";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 
+
+//Custom 
+import UsersExtendRouter from "./routes/custom/user.extend.router.js";
+
 //passport imports
 import cookieParser from "cookie-parser";
 import passport from "passport";
@@ -61,6 +65,10 @@ app.use("/api/views", viewRouter)
 app.use("/api/sessions", sessionRouter)
 app.use("/users",viewsSessionRouter) 
 app.use('/github', githubLoginViewRouter)
+
+const usersExtendRouter = new UsersExtendRouter()
+app.use('/api/extend/users', usersExtendRouter.getRouter())
+
 
 const httpServer = app.listen(PORT,()=>{
     console.log("server run on port:",PORT);
