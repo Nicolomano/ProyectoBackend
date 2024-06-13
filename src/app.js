@@ -6,6 +6,7 @@ import session from "express-session";
 import mongoose from "mongoose";
 import fileStore from 'session-file-store'
 import MongoStore from "connect-mongo";
+import config from "./config/config.js";
 
 //import Routers
 import viewRouter from "./routes/views.router.js"
@@ -36,10 +37,10 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 
+const SERVER_PORT = config.port
+const URL_MONGO = config.mongoUrl
 
 const fileStorage = fileStore(session)
-const URL_MONGO = 'mongodb+srv://nicoezequielromano98:B34hiFCWF6lk3uol@cluster0.ofuh9pl.mongodb.net/proyect?retryWrites=true&w=majority&appName=Cluster0'
-
 //Cookies
 app.use(cookieParser('CoderS3cr3tC0d3'))
 
@@ -70,8 +71,8 @@ const usersExtendRouter = new UsersExtendRouter()
 app.use('/api/extend/users', usersExtendRouter.getRouter())
 
 
-const httpServer = app.listen(PORT,()=>{
-    console.log("server run on port:",PORT);
+const httpServer = app.listen(SERVER_PORT,()=>{
+    console.log("server run on port:",SERVER_PORT);
 } )
 
 
