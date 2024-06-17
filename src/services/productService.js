@@ -20,3 +20,7 @@ export async function getProductById (id){
 export async function createProduct(productData){
     return await productsModel.create(productData)
 }
+
+export async function productsPaginate(page){
+    return await productsModel.paginate({},{page,limit:10, lean: true})
+}
