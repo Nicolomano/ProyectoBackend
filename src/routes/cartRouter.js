@@ -1,36 +1,19 @@
 import cartsModel from "../models/carts.js";
 import express from "express";
 import productsModel from "../models/products.js";
+import { createCartController, getCartController } from "../controllers/cart.controller.js";
 
 
 const cartRouter = express.Router()
 
 //Endpoint de creacion de nuevo cart
-cartRouter.post("/", async (req,res)=>{
-    try{
-        console.log("Creando un nuevo carrito");
-        const newCart = await cartsModel.create({})
-        console.log("Nuevo carrito creado: ", newCart);
-        res.status(201).send(newCart)
-    } catch (error){
-        console.error("Error:", error);
-        res.status(500).send("Internal server error")
-    }
-})
+cartRouter.post("/", createCartController)
+
+//Endpoint para traer todos los carts
+
+
 //Endpoint para traer un cart y sus productos
-cartRouter.get("/:cid", async (req, res)=>{
-    try{
-        const cartId = req.params.cid
-        const cart = await cartsModel.findOne({_id:cartId})
-        if(!cart){
-            return res.status(404).send({error:"Carrito no encontrado"})
-        }
-        res.json(cart.products)
-    }catch(error){
-        console.error("Error:", error);
-        res.status(500).send("Internal server error")
-    }
-})
+cartRouter.get("/:cid", getCartController)
 
 //Endpoint para agregar productos al cart
 cartRouter.post("/:cid/products/:pid",async(req, res)=>{

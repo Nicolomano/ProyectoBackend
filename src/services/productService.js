@@ -12,3 +12,11 @@ export async function getProducts(page = 1, limit = 10) {
     const nextPage = hasNextPage ? page + 1 : null;
     return { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage };
 }
+
+export async function getProductById (id){
+    return await productsModel.findOne({ _id: id})
+}
+
+export async function createProduct(productData){
+    return await productsModel.create(productData)
+}
