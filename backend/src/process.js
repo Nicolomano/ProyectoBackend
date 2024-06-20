@@ -14,19 +14,19 @@ console.log('Option - Port: ', program.opts().p);
 
 
 //Listeners
-process.on('exit', code =>{
-    console.log('Este codigo se ejecuta andes de salir del proceso');
-    console.log('Codigo de salida del process: '+ code);
-})
+// process.on('exit', code =>{
+//     console.log('Este codigo se ejecuta andes de salir del proceso');
+//     console.log('Codigo de salida del process: '+ code);
+// })
 
-process.on('uncaughtException', exception =>{
-    console.log('Esta exception no fue capturada, o controlada');
-    console.log('exception no capturada: '+ exception);
-})
+// process.on('uncaughtException', exception =>{
+//     console.log('Esta exception no fue capturada, o controlada');
+//     console.log('exception no capturada: '+ exception);
+// })
 
-process.on('message', message =>{
-    console.log('Este codigo se ejecutara cuando reciba un mensaje de otro proceso');
-    console.log(`Mensaje recibido: ${message}`);
-})
+// process.on('message', message =>{
+//     console.log('Este codigo se ejecutara cuando reciba un mensaje de otro proceso');
+//     console.log(`Mensaje recibido: ${message}`);
+// })
 
 export default program

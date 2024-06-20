@@ -24,6 +24,7 @@ import UsersExtendRouter from "./routes/custom/user.extend.router.js";
 import cookieParser from "cookie-parser";
 import passport from "passport";
 import initializePassport from "./config/passport.config.js";
+import MongoSingleton from "./config/mongodb-singleton.js";
 
 
 const app = express()
@@ -37,6 +38,7 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 
+console.log(config);
 const SERVER_PORT = config.port
 const URL_MONGO = config.mongoUrl
 
@@ -75,15 +77,12 @@ const httpServer = app.listen(SERVER_PORT,()=>{
     console.log("server run on port:",SERVER_PORT);
 } )
 
-
 const connectMongoDB = async () =>{
-    try {
-        await mongoose.connect(URL_MONGO)
-        console.log("Conectado con exito a MongoDB usando mongoose");
-    } catch (error) {
-        console.error("No se pudo conectar a la BD usando Moongose: " + error);
-        process.exit();
-    }
+try {
+    MongoSingleton.getInstance()
+} catch (error) {
+    console.error(error);
+}
 }
 
 connectMongoDB()

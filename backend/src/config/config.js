@@ -5,7 +5,7 @@ import program from '../process.js'
 const environment = program.opts().mode
 
 dotenv.config({
-    path: environment ==='production' ? './src/config/.env.production' : './src/config/.env.development'
+    path: environment ==='production' ? './backend/src/config/.env.production' : './backend/src/config/.env.development'
 })
 
 export default {
