@@ -1,8 +1,8 @@
-import {getProducts, getProductById, createProduct} from '../services/productService.js';
+import { getProductById, createProduct, getAll} from '../services/productService.js';
 
 export async function getProductsController(req, res){
     const page = parseInt(req.query.page) || 1;
-    const { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await getProducts(page);
+    const { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await getAll(page);
     const prevLink = hasPrevPage ? `/api/products/?page=${prevPage}` : null;
     const nextLink = hasNextPage ? `/api/products/?page=${nextPage}` : null;
     res.json({

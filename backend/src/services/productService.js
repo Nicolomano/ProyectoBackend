@@ -1,6 +1,6 @@
 import productsModel from "../models/products.js";
 
-export async function getProducts(page = 1, limit = 10) {
+export async function getAll(page = 1, limit = 10) {
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
     const totalProducts = await productsModel.countDocuments();
