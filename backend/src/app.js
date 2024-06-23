@@ -7,6 +7,8 @@ import mongoose from "mongoose";
 import fileStore from 'session-file-store'
 import MongoStore from "connect-mongo";
 import config from "./config/config.js";
+import cors from "cors";
+import { corsOptions } from "./utils.js";
 
 //import Routers
 import viewRouter from "./routes/views.router.js"
@@ -38,6 +40,7 @@ app.set("view engine", "handlebars");
 app.set("views", __dirname + "/views");
 app.use(express.static(__dirname + "/public"));
 
+
 console.log(config);
 const SERVER_PORT = config.port
 const URL_MONGO = config.mongoUrl
@@ -61,6 +64,9 @@ app.use(session({
 initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
+
+//Middlewares cors
+app.use(cors(corsOptions))
 
 app.use("/api/products", productrouter)
 app.use("/api/carts", cartRouter)

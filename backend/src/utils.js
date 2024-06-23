@@ -71,4 +71,11 @@ export const authorization = (role)=>{
     }
 }
 
+export const corsOptions = {
+    origin: 'http://127.0.0.1:5500',
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: 'Content-Type, Authorization',
+    credentials: true
+}
+
 export default __dirname
