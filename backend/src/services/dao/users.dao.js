@@ -1,4 +1,4 @@
-import userModel from '../../models/userModel.js'
+import userModel from '../models/userModel.js'
 
 export default class UserServices {
     constructor(){
@@ -14,7 +14,7 @@ export default class UserServices {
         return result
         
     }
-    findByUsername = async (username) =>{
+    findOne = async (username) =>{
         let result = await userModel.findOne({email:username})
         return result
         

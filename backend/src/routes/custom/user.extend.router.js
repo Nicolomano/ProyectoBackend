@@ -1,5 +1,5 @@
 import CustomRouter from "./custom.router.js"
-import UserServices from '../../services/db/user.services.js'
+import UserServices from "../../services/dao/users.dao.js";
 import { createHash, generateJWToken, isValidPassword } from "../../utils.js";
 
 

@@ -1,6 +1,5 @@
-import passport from "passport";
 import { generateJWToken , isValidPassword} from "../utils.js";
-import { getUser } from "../services/session.services.js";
+import { userService } from "../services/service.js";
 
 
 export async function githubCallback(req,res){
@@ -29,7 +28,7 @@ export async function registerUser(req,res){
 export async function loginUser(req,res){
     const{ email, password} = req.body
     try {
-        const user = await getUser(email)
+        const user = await userService.findOne(email)
         console.log('user found for login: ');
         console.log(user);
         if(!user){ 

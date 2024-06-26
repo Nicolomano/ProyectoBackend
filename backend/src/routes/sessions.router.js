@@ -1,7 +1,5 @@
 import { Router } from "express";
 import passport from "passport";
-import { generateJWToken, isValidPassword } from "../utils.js";
-import userModel from "../models/userModel.js";
 import { githubCallback, loginUser, registerUser} from "../controllers/session.controller.js";
 
 const sessionRouter = Router()
@@ -13,8 +11,6 @@ sessionRouter.get('/githubcallback', passport.authenticate('github', {failureRed
 sessionRouter.post("/register", passport.authenticate('register', {failureRedirect:'api/sessions/fail-register'}), registerUser)
 
 sessionRouter.post("/login",passport.authenticate('login', {failureRedirect:'/api/sessions/fail-login'}), loginUser) 
-
-
 
 
 

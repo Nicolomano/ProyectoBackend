@@ -1,10 +1,11 @@
-import { createCart, getCart, saveCart } from "../services/cart.services.js";
-import { getProductById } from "../services/productService.js";
+import { cartService } from '../services/service.js';
+import { productsService } from '../services/service.js';
 
 export async function createCartController(req, res) {
     try {
         console.log("Creating cart");
-        const newCart =await createCart()
+        const newCart =await cartService.create()
+        res.status(201).json(newCart);
         console.log("New cart created: ", newCart);
     } catch (error) {
         console.error(error);
@@ -15,7 +16,7 @@ export async function createCartController(req, res) {
 export async function getCartController(req, res) {
     try {
         const cartId = req.params.cid;
-        const cart = await getCart(cartId);
+        const cart = await cartService.getOne(cartId);
         if(!cart){
             return res.status(404).send({error:"Carrito no encontrado"})
         }
@@ -36,8 +37,8 @@ export async function addProductToCartController(req,res){
         }else{
             quantity = Number(req.body.quantity);
         }
-        const cart = await getCart(cartId);
-        const product = await getProductById(productId)
+        const cart = await cartService.getOne(cartId);
+        const product = await productsService.findOne(productId)
         if(!cart|| !product){
             console.log(cart);
             console.log(product);
@@ -49,7 +50,7 @@ export async function addProductToCartController(req,res){
         }else{
             cart.products.push({product: productId, quantity})
         }
-        await saveCart(cart);
+        await cartService.save(cart);
         res.status(201).json(cart)
 
 
@@ -64,7 +65,7 @@ export async function deleteProductController(req,res){
     try {
         const cartId = req.params.cid;
         const productId = req.params.pid;
-        const cart = await getCart(cartId);
+        const cart = await cartService.getOne(cartId);
         if(!cart){
             return res.status(404).send({error:"Cart not found"})
         }
@@ -87,7 +88,7 @@ export async function updateProductQuantityController(req,res){
         if(isNaN(quantity)){
             return res.status(400).send({error:"Quantity must be a number"})
         }
-        const cart = await getCart(cartId)
+        const cart = await cartService.getOne(cartId)
 
         if(!cart){
             return res.status(404).send({error: "Cart not found"})
@@ -114,7 +115,7 @@ export async function updateProductQuantityController(req,res){
 export async function deleteAllProductsFromCartController(req,res){
     try {
         const cartId = req.params.cid;
-        const cart =await getCart(cartId);
+        const cart =await cartService.getOne(cartId);
         if(!cart){
             return res.status(404).send({error: "Carrito no encontrado"})
         }

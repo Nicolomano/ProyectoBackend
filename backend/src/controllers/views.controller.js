@@ -1,11 +1,10 @@
-
-import { populateCart } from "../services/cart.services.js";
-import { productsPaginate } from "../services/productService.js";
+import { cartService } from "../services/service.js";
+import { productsService } from "../services/service.js";
 
 export async function viewCartController (req,res){
     try{
         const cartId = req.params.cid
-        const cart = await populateCart(cartId)
+        const cart = await cartService.populate(cartId)
         if(!cart){
             return res.status(404).send({error:"Cart not found"})
         }
@@ -20,7 +19,7 @@ export async function viewProductController (req,res){
     try {
         let page = parseInt(req.query.page)
         if (!page) page = 1;
-        const result = await productsPaginate(page)
+        const result = await productsService.findWithPagination(page)
         result.prevLink = result.hasPrevPage ? `http://localhost:8080/api/views/products/?page=${result.prevPage}` : ''
         result.nextLink = result.hasNextPage ? `http://localhost:8080/api/views/products/?page=${result.nextPage}` : ''
         result.isValid = !(page<0 || page > result.totalPages)

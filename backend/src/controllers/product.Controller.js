@@ -1,8 +1,8 @@
-import { getProductById, createProduct, getAll} from '../services/productService.js';
+import { productsService } from "../services/service.js";
 
 export async function getProductsController(req, res){
     const page = parseInt(req.query.page) || 1;
-    const { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await getAll(page);
+    const { products, totalPages, hasPrevPage, hasNextPage, prevPage, nextPage } = await productsService.getAll(page)
     const prevLink = hasPrevPage ? `/api/products/?page=${prevPage}` : null;
     const nextLink = hasNextPage ? `/api/products/?page=${nextPage}` : null;
     res.json({
@@ -22,7 +22,7 @@ export async function getProductsController(req, res){
 export async function getProductByIdController (req, res) {
     try {
         const productId = req.params.pid;
-        const product = await getProductById(productId);
+        const product = await productsService.findOne(productId)
         if(product){
             res.render('product', product);
         }else{
@@ -40,7 +40,7 @@ export async function createProductController (req,res){
         if(!title||!description || !price || !thumbnail || !code || !stock){
             return res.status(400).send("Error, todos los campos son obligatorios")
         }
-        const newProduct = await createProduct({
+        const newProduct = await productsService.create({
             title,
             description,
             price,
