@@ -76,7 +76,7 @@ app.use("/users",viewsSessionRouter)
 app.use('/github', githubLoginViewRouter)
 
 const usersExtendRouter = new UsersExtendRouter()
-app.use('/api/extend/users', usersExtendRouter.getRouter())
+app.use('/api/users', usersExtendRouter.getRouter())
 
 
 const httpServer = app.listen(SERVER_PORT,()=>{

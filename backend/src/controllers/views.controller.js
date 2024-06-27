@@ -19,13 +19,13 @@ export async function viewProductController (req,res){
     try {
         let page = parseInt(req.query.page)
         if (!page) page = 1;
-        const result = await productsService.findWithPagination(page)
+        const result = await productsService.getAll(page)
         result.prevLink = result.hasPrevPage ? `http://localhost:8080/api/views/products/?page=${result.prevPage}` : ''
         result.nextLink = result.hasNextPage ? `http://localhost:8080/api/views/products/?page=${result.nextPage}` : ''
         result.isValid = !(page<0 || page > result.totalPages)
         result.user = req.session.user
         res.render("home", result)
-        console.log(result);
+        console.log('result:',result);
     }catch(error){
         console.error("error:", error)
         res.status(500).send("internal server error")
