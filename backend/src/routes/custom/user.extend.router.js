@@ -1,18 +1,20 @@
 import CustomRouter from "./custom.router.js"
-import UserServices from "../../services/dao/users.dao.js";
+import { userService } from "../../services/service.js";
 import { createHash, generateJWToken, isValidPassword } from "../../utils.js";
+import  UserDTO  from '../../services/dto/user.dto.js';
 
 
 
 export default class UsersExtendRouter extends CustomRouter {
     init() {
-        const userServices = new UserServices()
         this.get('/', ['PUBLIC'], (req,res)=>{
             res.sendSuccess('Hello')
         })
 
         this.get('/currentUser', ['USER', 'USER_PREMIUM', 'ADMIN'], (req,res)=>{
-            res.sendSuccess(req.user)
+            const user = req.user
+            console.log(user);
+            res.sendSuccess(user)
         })
 
         this.get('/premiumUser',['USER_PREMIUM'], (req,res)=>{
@@ -26,7 +28,7 @@ export default class UsersExtendRouter extends CustomRouter {
         this.post('/login', ['PUBLIC'],async (req, res)=>{
             const {email, password} = req.body
             try {
-                const user = await userServices.findByUsername(email)
+                const user = await userService.findOne(email)
                 console.log('User found for login');
                 console.log(user);
 
@@ -61,7 +63,7 @@ export default class UsersExtendRouter extends CustomRouter {
             console.log('Registrando usuario');
             console.log(req.body);
 
-            const exists = await userServices.findByUsername(email)
+            const exists = await userService.findOne(email)
             if(exists){
                 return res.status(400).send({status: 'error', message: 'User already exists'})
             }

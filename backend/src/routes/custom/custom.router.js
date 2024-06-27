@@ -61,6 +61,7 @@ export default class CustomRouter {
             if(error) return res.status(403).send({error:'Token invalid, Unauthorized!'})
             //Token ok
             const user = credentials.user
+            console.log(user);
 
             if(!policies.includes(user.role.toUpperCase())) return res.status(403).send({error: 'El usuario no tiene privilegios, revisa tus roles'})
             

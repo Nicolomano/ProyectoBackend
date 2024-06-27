@@ -1,8 +1,11 @@
 import express from "express";
 import { addProductToCartController, createCartController, deleteAllProductsFromCartController, deleteProductController, getCartController, updateProductQuantityController } from "../controllers/cart.controller.js";
+import { authorization } from "../utils.js";
+
 
 
 const cartRouter = express.Router()
+
 
 //Endpoint de creacion de nuevo cart
 cartRouter.post("/", createCartController)
@@ -14,7 +17,7 @@ cartRouter.post("/", createCartController)
 cartRouter.get("/:cid", getCartController)
 
 //Endpoint para agregar productos al cart
-cartRouter.post("/:cid/products/:pid", addProductToCartController)
+cartRouter.post("/:cid/products/:pid",authorization('USER', 'USER_PREMIUM'), addProductToCartController)
 
 
 //Endpoint para eliminar un producto especifico del cart

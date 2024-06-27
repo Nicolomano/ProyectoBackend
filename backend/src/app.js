@@ -29,6 +29,7 @@ import initializePassport from "./config/passport.config.js";
 import MongoSingleton from "./config/mongodb-singleton.js";
 
 
+
 const app = express()
 const PORT=8080
 
@@ -53,7 +54,7 @@ app.use(session({
     store:MongoStore.create({
         mongoUrl: URL_MONGO,
         mongoOptions: {useNewURLParser: true, useUnifiedTopology: true},
-        ttl:10*60
+        ttl:10*600
     }),
     secret:"coderS3cr3t",
     resave: false,
@@ -65,9 +66,9 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 
+
 //Middlewares cors
 app.use(cors(corsOptions))
-
 app.use("/api/products", productrouter)
 app.use("/api/carts", cartRouter)
 app.use("/api/views", viewRouter)

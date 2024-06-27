@@ -19,7 +19,7 @@ export const isValidPassword = (user, password)=>{
 export const PRIVATE_KEY = 'BackendProyectSecretKeyJWT'
 
 export const generateJWToken = (user)=>{
-    return jwt.sign({user},PRIVATE_KEY,{expiresIn:'60s'})
+    return jwt.sign({user},PRIVATE_KEY,{expiresIn:'1000s'})
 }
 
 export const authToken =(req,res,next)=>{
@@ -59,11 +59,14 @@ export const passportCall = (strategy)=>{
 }
 
 
-export const authorization = (role)=>{
+export const authorization = (...allowedRoles)=>{
     return async (req,res,next)=> {
-        if(!req.user) return res.status(401).send('Unauthorized: User not found in JWT')
 
-        if(req.user.role !== role){
+        const user = req.user
+        if(!user) return res.status(401).send('Unauthorized: User not found in JWT')
+
+        if(!allowedRoles.includes(user.role)){
+            console.log(req.user.role);
             return res.status(403).send('Forbidden: El usuario no tiene permisos con este rol')
 
         }
