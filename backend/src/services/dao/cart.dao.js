@@ -21,5 +21,7 @@ export default class CartsDao {
         const populatedCart = await cartsModel.findOne({_id:cartId}).populate("products.product")
         return populatedCart
     }
+    update = async (cartId, cart) => {
+        return cartsModel.updateOne({_id:cartId}, cart)}
 }
 

@@ -1,11 +1,12 @@
 import express from "express";
 import { getProductByIdController, getProductsController , createProductController} from "../controllers/product.Controller.js"
-import { authorization } from "../utils.js";
+import { authToken, authorization } from "../utils.js";
 
 
 
 const productrouter = express.Router()
 
+productrouter.use(authToken)
 
 productrouter.get("/", getProductsController)
 

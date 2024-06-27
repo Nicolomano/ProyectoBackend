@@ -66,7 +66,7 @@ export default class CustomRouter {
             if(!policies.includes(user.role.toUpperCase())) return res.status(403).send({error: 'El usuario no tiene privilegios, revisa tus roles'})
             
             req.user= user;
-            console.log(user);
+            
             next()
         })
         

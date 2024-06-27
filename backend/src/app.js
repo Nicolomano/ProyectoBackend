@@ -1,7 +1,7 @@
 import  express  from "express";
 import handlebars from "express-handlebars"
 import { Server } from "socket.io";
-import __dirname from "./utils.js";
+import __dirname, { authToken, authorization } from "./utils.js";
 import session from "express-session";
 import mongoose from "mongoose";
 import fileStore from 'session-file-store'
@@ -32,6 +32,8 @@ import MongoSingleton from "./config/mongodb-singleton.js";
 
 const app = express()
 const PORT=8080
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -30,7 +30,7 @@ export const authToken =(req,res,next)=>{
     if(!authHeader){
         return res.status(401).send({error:'User not authenticated or missing token'})
     }
-    const token = authHeader.split('')[1]
+    const token = authHeader.split(' ')[1]
     jwt.verify(token,PRIVATE_KEY,(error,credentials)=>{
         if(error) return res.status(403).send({error:'Token invalid, Unauthorized!'})
         req.user= credentials.user
@@ -60,13 +60,14 @@ export const passportCall = (strategy)=>{
 
 
 export const authorization = (...allowedRoles)=>{
-    return async (req,res,next)=> {
+    return (req,res,next)=> {
 
         const user = req.user
+        console.log(user);
         if(!user) return res.status(401).send('Unauthorized: User not found in JWT')
 
-        if(!allowedRoles.includes(user.role)){
-            console.log(req.user.role);
+        if(!allowedRoles.includes(user.role.toUpperCase())){
+            console.log(user.role);
             return res.status(403).send('Forbidden: El usuario no tiene permisos con este rol')
 
         }

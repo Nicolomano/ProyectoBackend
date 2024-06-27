@@ -22,4 +22,7 @@ export default class CartsRepository {
     populate = (cartId) => {
         return this.dao.populate(cartId)
     }
+    update = (cartId, cart) => {
+        return this.dao.update(cartId, cart)
+    }
 }

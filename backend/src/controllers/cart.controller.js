@@ -1,5 +1,6 @@
-import { cartService } from '../services/service.js';
+import { cartService, ticketService } from '../services/service.js';
 import { productsService } from '../services/service.js';
+import {v4 as uuidv4} from 'uuid';
 
 export async function createCartController(req, res) {
     try {
@@ -10,6 +11,15 @@ export async function createCartController(req, res) {
     } catch (error) {
         console.error(error);
         res.status(500).send('internal server error')
+    }
+}
+
+export async function getAllCartsController(req, res) {
+    try {
+        const carts = await cartService.getAll();
+        res.status(200).json(carts);
+    } catch (error) {
+        console.error(error);
     }
 }
 
@@ -125,6 +135,45 @@ export async function deleteAllProductsFromCartController(req,res){
 
         res.status(200).json(cart)
     } catch (error) {
+        console.error("Error:", error);
+        res.status(500).send("Internal server error")
+    }
+}
+
+export async function purchaseCartController(req,res){
+    try {
+        const cartId = req.params.cid;
+        const cart = await cartService.getOne(cartId);
+        if(!cart){
+            return res.status(404).send({error: "Carrito no encontrado"})
+        }
+
+        if(cart.products.length === 0){
+            return res.status(400).send({error: "Carrito vacio"})
+        }
+        const unprocessedProducts = [];
+
+        for(const product of cart.products){
+            const productDB = await productsService.findOne(product.product);
+            if(productDB.stock >= product.quantity){
+                productDB.stock -= product.quantity;
+                await productsService.updateOne(product.product, productDB);
+            }else{
+                unprocessedProducts.push(productDB);
+            }
+        }
+
+        const ticket = await ticketService.create({
+            code: uuidv4(),
+            purchase_datetime: new Date(),
+            amount: cart.products.filter(item => !unprocessedProducts.includes(item.product)).reduce((acc, item) => acc + item.quantity, 0),
+            purchaser : req.user.email
+        })
+
+        cart.products = cart.products.filter(item => unprocessedProducts.includes(item.product))
+        await cartService.update(cartId, cart)
+        res.send({ticket, unprocessedProducts})
+    } catch(error){
         console.error("Error:", error);
         res.status(500).send("Internal server error")
     }
