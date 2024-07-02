@@ -1,6 +1,6 @@
 import { generateJWToken , isValidPassword} from "../utils.js";
 import { userService } from "../services/service.js";
-
+import axios from 'axios'
 
 export async function githubCallback(req,res){
     const user = req.user;
@@ -17,6 +17,14 @@ export async function githubCallback(req,res){
         maxAge: 60000,
         httpOnly: true 
     })
+    //send email
+    axios.get('http://localhost:8080/api/email', {params: {user:user}})
+        .then(response=>{
+            console.log('Correo electronico enviado correctamente');
+        })
+        .catch(error=>{
+            console.error("error enviando mail");
+        })
     res.redirect('/users')
   
 }
