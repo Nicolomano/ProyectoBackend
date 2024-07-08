@@ -1,6 +1,9 @@
+import CustomError from '../services/errors/customErrors.js';
+import { addProductToCartErrorInfo } from '../services/errors/messages/product-creation-error.message.js';
 import { cartService, ticketService } from '../services/service.js';
 import { productsService } from '../services/service.js';
 import {v4 as uuidv4} from 'uuid';
+import EErrors from '../services/errors/errors-enum.js';
 
 export async function createCartController(req, res) {
     try {
@@ -50,9 +53,12 @@ export async function addProductToCartController(req,res){
         const cart = await cartService.getOne(cartId);
         const product = await productsService.findOne(productId)
         if(!cart|| !product){
-            console.log(cart);
-            console.log(product);
-            return res.status(404).send({error:"Cart or product not found"})
+            CustomError.createError({
+                name:'Add product to cart error',
+                cause: addProductToCartErrorInfo({cartId, productId }),
+                message:"Cart or product not found", 
+                code: EErrors.NOT_FOUND
+            })
         }
         const productInCart = cart.products.find(item => item.product.equals(productId));
         if(productInCart){
@@ -66,8 +72,8 @@ export async function addProductToCartController(req,res){
 
 
     } catch (error) {
-        console.error(error);
-        res.status(500).send('internal server error')
+        console.error(error.cause);
+        res.status(500).send({error: error.code, message: error.message})
     }
 }
 

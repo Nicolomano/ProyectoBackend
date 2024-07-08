@@ -76,7 +76,7 @@ export default class UsersExtendRouter extends CustomRouter {
                 role
             }
 
-            const result= await userServices.save(user)
+            const result= await userService.save(user)
             res.status(201).send({status:'Success', message:'Usuario creado con exito con ID: '+ result.id})
         })
     }

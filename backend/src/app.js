@@ -18,6 +18,7 @@ import viewsSessionRouter from "./routes/users.views.router.js";
 import productrouter from "./routes/product.Router.js";
 import githubLoginViewRouter from "./routes/github-login.views.router.js";
 import emailRouter from "./routes/email.router.js";
+import mockRouter from "./routes/mocking.router.js";
 
 
 //Custom 
@@ -79,6 +80,7 @@ app.use("/api/sessions", sessionRouter)
 app.use("/users",viewsSessionRouter) 
 app.use('/github', githubLoginViewRouter)
 app.use('/api/email', emailRouter)
+app.use('/mockingproducts', mockRouter )
 
 const usersExtendRouter = new UsersExtendRouter()
 app.use('/api/users', usersExtendRouter.getRouter())

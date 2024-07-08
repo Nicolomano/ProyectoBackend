@@ -18,7 +18,7 @@ cartRouter.get("/", getAllCartsController )
 cartRouter.get("/:cid", getCartController)
 
 //Endpoint para agregar productos al cart
-cartRouter.post("/:cid/products/:pid",authorization('USER', 'USER_PREMIUM'), addProductToCartController)
+cartRouter.post("/:cid/products/:pid",authorization('USER', 'USER_PREMIUM', 'ADMIN'), addProductToCartController)
 
 
 //Endpoint para eliminar un producto especifico del cart

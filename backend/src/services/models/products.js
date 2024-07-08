@@ -14,7 +14,7 @@ const stringTypeSchemaNonUniqueRequired = {
 const productsSchema = new mongoose.Schema({
     title: stringTypeSchemaNonUniqueRequired,
     description: stringTypeSchemaNonUniqueRequired,
-    price: Number,
+    price: {type: Number, required: true},
     thumbnail: stringTypeSchemaNonUniqueRequired,
     code: stringTypeSchemaUniqueRequired,
     stock: Number

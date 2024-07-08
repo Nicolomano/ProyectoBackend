@@ -4,6 +4,7 @@ import {dirname} from "path";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import passport from "passport";
+import { faker } from "@faker-js/faker";
 
 
 const __filename = fileURLToPath(import.meta.url)
@@ -83,3 +84,18 @@ export const corsOptions = {
 }
 
 export default __dirname
+
+
+//fake data
+
+
+export const fakeProducts = () =>{
+    return {
+        title: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: faker.commerce.price(),
+        thumbnail: faker.image.avatar(),
+        code: faker.number.hex(),
+        stock: faker.number.int({min:1, max:100})
+    }
+}

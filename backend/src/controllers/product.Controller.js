@@ -1,4 +1,7 @@
 import { productsService } from "../services/service.js";
+import CustomError from "../services/errors/customErrors.js";
+import EErrors from "../services/errors/errors-enum.js";
+import { createProductErrorInfo } from "../services/errors/messages/product-creation-error.message.js";
 
 export async function getProductsController(req, res){
     const page = parseInt(req.query.page) || 1;
@@ -38,7 +41,12 @@ export async function createProductController (req,res){
     try {
         const {title, description, price, thumbnail, code, stock} = req.body;
         if(!title||!description || !price || !thumbnail || !code || !stock){
-            return res.status(400).send("Error, todos los campos son obligatorios")
+            CustomError.createError({
+                name: 'create product error',
+                cause: createProductErrorInfo({title, description, price, thumbnail, code, stock}),
+                message: 'Missing required fields',
+                code: EErrors.INVALID_TYPE_ERROR
+            })
         }
         const newProduct = await productsService.create({
             title,
@@ -51,8 +59,8 @@ export async function createProductController (req,res){
         res.status(201).send(newProduct)
         
     } catch (error) {
-        console.error("Error", error);
-        res.status(500).send("Internal server error")
+        console.error(error.cause);
+        res.status(500).send({error: error.code, message: error.message})
     }
     
 }
